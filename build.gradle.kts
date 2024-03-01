@@ -41,6 +41,9 @@ dependencies {
     annotationProcessor("org.openrewrite:rewrite-templating:latest.release")
     implementation("org.openrewrite:rewrite-templating")
 
+    // Need to have a slf4j binding to see any output enabled from the parser.
+    runtimeOnly("ch.qos.logback:logback-classic:1.2.+")
+
     "testWithStruts6Implementation"("org.apache.struts:struts2-core:latest.release")
 }
 

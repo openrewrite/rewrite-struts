@@ -16,6 +16,7 @@
 package org.openrewrite.java.struts.search;
 
 import org.openrewrite.*;
+import org.openrewrite.java.struts.internal.TagUtils;
 import org.openrewrite.java.struts.table.StrutsActions;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.xml.XPathMatcher;
@@ -47,14 +48,14 @@ public class FindStrutsActions extends Recipe {
                     String pkg = getCursor().getPathAsStream(Xml.Tag.class::isInstance)
                             .map(Xml.Tag.class::cast)
                             .filter(t -> t.getName().equals("package"))
-                            .map(t -> getAttribute(t, "name", ""))
+                            .map(t -> TagUtils.getAttribute(t, "name", ""))
                             .collect(Collectors.joining("."));
                     actions.insertRow(ctx, new StrutsActions.Row(
                             getCursor().firstEnclosingOrThrow(SourceFile.class).getSourcePath().toString(),
                             pkg,
-                            getAttribute(tag, "name", "unknown"),
-                            getAttribute(tag, "class", "unknown"),
-                            getAttribute(tag, "method", "unknown")));
+                            TagUtils.getAttribute(tag, "name", "unknown"),
+                            TagUtils.getAttribute(tag, "class", "unknown"),
+                            TagUtils.getAttribute(tag, "method", "unknown")));
                     return SearchResult.found(tag);
                 }
                 return super.visitTag(tag, ctx);
@@ -62,11 +63,4 @@ public class FindStrutsActions extends Recipe {
         });
     }
 
-    private String getAttribute(Xml.Tag tag, String name, String defaultValue) {
-        return tag.getAttributes().stream()
-                .filter(a -> a.getKey().getName().equals(name))
-                .findFirst()
-                .map(a -> a.getValue().getValue())
-                .orElse(defaultValue);
-    }
 }
