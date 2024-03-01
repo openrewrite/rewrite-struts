@@ -59,7 +59,7 @@ In the pom.xml of a different project you wish to test your recipe out in, make 
                 <version>RELEASE</version>
                 <configuration>
                     <activeRecipes>
-                        <recipe>com.yourorg.NoGuavaListsNewArrayList</recipe>
+                        <recipe>org.openrewrite.struts.NoGuavaListsNewArrayList</recipe>
                     </activeRecipes>
                 </configuration>
                 <dependencies>
@@ -94,7 +94,7 @@ dependencies {
 }
 
 rewrite {
-    activeRecipe("com.yourorg.NoGuavaListsNewArrayList")
+    activeRecipe("org.openrewrite.struts.NoGuavaListsNewArrayList")
 }
 ```
 
