@@ -21,6 +21,7 @@ import org.openrewrite.java.struts.table.StrutsActions;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.xml.XPathMatcher;
 import org.openrewrite.xml.XmlIsoVisitor;
+import org.openrewrite.xml.search.FindTags;
 import org.openrewrite.xml.tree.Xml;
 
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class FindStrutsActions extends Recipe {
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
         XPathMatcher actionMatcher = new XPathMatcher("//action");
-        return Preconditions.check(new FindSourceFiles("**/struts.xml"), new XmlIsoVisitor<ExecutionContext>() {
+        return Preconditions.check(new FindTags("/struts"), new XmlIsoVisitor<ExecutionContext>() {
             @Override
             public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
                 if (actionMatcher.matches(getCursor())) {

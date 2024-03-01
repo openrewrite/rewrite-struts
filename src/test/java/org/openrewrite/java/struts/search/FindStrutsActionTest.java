@@ -59,8 +59,7 @@ public class FindStrutsActionTest implements RewriteTest {
                         </action>
                     </package>
                 </struts>
-                """,
-              spec -> spec.path("struts.xml")
+                """
             )
           )
         );
