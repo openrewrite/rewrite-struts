@@ -15,7 +15,7 @@
  */
 @NonNullApi
 @NonNullFields
-package org.openrewrite.java.struts;
+package org.openrewrite.java.struts.search;
 
 import org.openrewrite.internal.lang.NonNullApi;
 import org.openrewrite.internal.lang.NonNullFields;
