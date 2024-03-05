@@ -14,18 +14,25 @@
 # limitations under the License.
 #
 ---
-type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.java.struts.MigrateStruts6
-displayName: Migrate to Struts 6
-description: Migrate Struts 2 to Struts 6
-recipeList:
-  - org.openrewrite.java.struts.MigrateAwareInterfaces
-  - org.openrewrite.java.struts.UpgradeStruts6Dependencies
+type: specs.openrewrite.org/v1beta/category
+name: Struts 6.0
+packageName: org.openrewrite.java.struts.migrate6
+description: Migrate to Struts 6.0. The full migration guide can be found [here](https://cwiki.apache.org/confluence/display/WW/Struts+2.5+to+6.0.0+migration#Struts2.5to6.0.0migration-Staticmethodsaccess).
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.java.struts.UpgradeStruts6Dependencies
-displayName: Upgrade Struts 6 dependencies
-description: Upgrade Struts 2 dependencies to Struts 6
+name: org.openrewrite.java.struts.migrate6.MigrateStruts6
+displayName: Migrate to Struts 6.0
+description: Migrate Struts 2.x to Struts 6.0
+recipeList:
+  - org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
+  - org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
+  - org.openrewrite.java.struts.MigrateStrutsDtd:
+      strutsVersion: 6.0
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
+displayName: Upgrade Struts 6.0 dependencies
+description: Upgrade Struts 2.x dependencies to Struts 6.0
 recipeList:
   - org.openrewrite.maven.upgrade.UpgradeDependencyVersion:
       groupId: org.apache.struts
@@ -33,8 +40,8 @@ recipeList:
       newVersion: 6.x
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.java.struts.MigrateStruts6Constants
-displayName: Migrate to Struts 6 constants
+name: org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
+displayName: Migrate to Struts 6.0 constants
 description: All Xwork constants had been already deprecated, with this version all of them have been removed and Struts constants have been used instead.
 preconditions:
   - org.openrewrite.java.struts.search.FindStrutsXml
@@ -157,9 +164,9 @@ recipeList:
 #  xwork.loggerFactory	<not used any more>
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.java.struts.MigrateAwareInterfaces
-displayName: Migrate Struts 2 interceptors to action "aware" interfaces
-description: These types have moved to a new package in Struts 6.
+name: org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
+displayName: Migrate Struts 2.0 interceptors to action "aware" interfaces
+description: These types have moved to a new package in Struts 6.0.
 recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.apache.struts2.interceptor.ApplicationAware

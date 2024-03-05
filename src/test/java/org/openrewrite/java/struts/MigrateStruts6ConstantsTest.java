@@ -31,7 +31,7 @@ public class MigrateStruts6ConstantsTest implements RewriteTest {
         spec.recipe(Environment.builder()
             .scanYamlResources()
             .build()
-            .activateRecipes("org.openrewrite.java.struts.MigrateStruts6Constants"))
+            .activateRecipes("org.openrewrite.java.struts.migrate6.MigrateStruts6Constants"))
           .expectedCyclesThatMakeChanges(1).cycles(1);
     }
 
