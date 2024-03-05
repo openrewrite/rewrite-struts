@@ -36,78 +36,125 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.MigrateStruts6Constants
 displayName: Migrate to Struts 6 constants
 description: All Xwork constants had been already deprecated, with this version all of them have been removed and Struts constants have been used instead.
-#preconditions:
-#  - org.openrewrite.FindSourceFiles:
-#      filePattern: '**/struts.xml'
+preconditions:
+  - org.openrewrite.java.struts.search.FindStrutsXml
 recipeList:
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: collectionConverter
+      oldValue: collectionConverter
       newValue: struts.converter.collection
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: dateConverter
+      oldValue: dateConverter
       newValue: struts.converter.date
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: numberConverter
+      oldValue: numberConverter
       newValue: struts.converter.number
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: stringConverter
+      oldValue: stringConverter
       newValue: struts.converter.string
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: arrayConverter
+      oldValue: arrayConverter
       newValue: struts.converter.array
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: devMode
+      oldValue: devMode
       newValue: struts.devMode
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: logMissingProperties
+      oldValue: logMissingProperties
       newValue: struts.ognl.logMissingProperties
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: enableOGNLExpressionCache
+      oldValue: enableOGNLExpressionCache
       newValue: struts.ognl.enableExpressionCache
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: enableOGNLEvalExpression
+      oldValue: enableOGNLEvalExpression
       newValue: struts.ognl.enableEvalExpression
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: reloadXmlConfiguration
+      oldValue: reloadXmlConfiguration
       newValue: struts.configuration.xml.reload
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
       attributeName: name
-      oldAttributeValue: allowStaticMethodAccess
+      oldValue: allowStaticMethodAccess
       newValue: struts.ognl.allowStaticMethodAccess
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: ognlExcludedClasses
+      newValue: struts.excludedClasses
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: ognlExcludedPackageNamePatterns
+      newValue: struts.excludedPackageNamePatterns
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: ognlExcludedPackageNames
+      newValue: struts.excludedPackageNames
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: additionalExcludedPatterns
+      newValue: struts.additional.excludedPatterns
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: additionalAcceptedPatterns
+      newValue: struts.additional.acceptedPatterns
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: overrideExcludedPatterns
+      newValue: struts.override.excludedPatterns
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: overrideAcceptedPatterns
+      newValue: struts.override.acceptedPatterns
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: struts.xwork.chaining.copyErrors
+      newValue: struts.chaining.copyErrors
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: struts.xwork.chaining.copyFieldErrors
+      newValue: struts.chaining.copyFieldErrors
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: struts.xwork.chaining.copyMessages
+      newValue: struts.chaining.copyMessages
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: xwork.autoGrowCollectionLimit
+      newValue: struts.ognl.autoGrowthCollectionLimit
+  - org.openrewrite.xml.ChangeTagAttribute:
+      elementName: constant
+      attributeName: name
+      oldValue: objectFactory.classloader
+      newValue: struts.objectFactory.classloader
 #  xwork.loggerFactory	<not used any more>
-#  ognlExcludedClasses	struts.excludedClasses
-#  ognlExcludedPackageNamePatterns	struts.excludedPackageNamePatterns
-#  ognlExcludedPackageNames	struts.excludedPackageNames
-#  additionalExcludedPatterns	struts.additional.excludedPatterns
-#  additionalAcceptedPatterns	struts.additional.acceptedPatterns
-#  overrideExcludedPatterns	struts.override.excludedPatterns
-#  overrideAcceptedPatterns	struts.override.acceptedPatterns
-#  struts.xwork.chaining.copyErrors	struts.chaining.copyErrors
-#  struts.xwork.chaining.copyFieldErrors	struts.chaining.copyFieldErrors
-#  struts.xwork.chaining.copyMessages	struts.chaining.copyMessages
-#  xwork.autoGrowCollectionLimit	struts.ognl.autoGrowthCollectionLimit
-#  objectFactory.classloader	struts.objectFactory.classloader
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.MigrateAwareInterfaces

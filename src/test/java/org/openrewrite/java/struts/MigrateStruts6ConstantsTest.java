@@ -35,7 +35,6 @@ public class MigrateStruts6ConstantsTest implements RewriteTest {
           .expectedCyclesThatMakeChanges(1).cycles(1);
     }
 
-    @Disabled
     @Test
     void inStrutsXml() {
         rewriteRun(
