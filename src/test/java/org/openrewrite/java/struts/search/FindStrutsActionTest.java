@@ -22,7 +22,7 @@ import org.openrewrite.test.RewriteTest;
 import static org.openrewrite.java.Assertions.srcMainResources;
 import static org.openrewrite.xml.Assertions.xml;
 
-public class FindStrutsActionTest implements RewriteTest {
+class FindStrutsActionTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {

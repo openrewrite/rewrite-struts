@@ -16,18 +16,20 @@
 package org.openrewrite.java.struts;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
 import static org.openrewrite.xml.Assertions.xml;
 
-public class MigrateStrutsDtdTest implements RewriteTest {
+class MigrateStrutsDtdTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new MigrateStrutsDtd("6.0"));
     }
 
+    @DocumentExample
     @Test
     void updateStrutsDtdFrom2_5To6() {
         rewriteRun(

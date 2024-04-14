@@ -28,7 +28,7 @@ import static org.openrewrite.test.SourceSpecs.text;
 import static org.openrewrite.xml.Assertions.xml;
 
 @SuppressWarnings("TrailingWhitespacesInTextBlock")
-public class HelloWorldStrutsTest implements RewriteTest {
+class HelloWorldStrutsTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
