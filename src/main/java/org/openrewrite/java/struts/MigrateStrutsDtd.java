@@ -30,7 +30,7 @@ public class MigrateStrutsDtd extends Recipe {
     @Option(displayName = "Struts version",
             description = "The Struts version to migrate to.",
             example = "6.0",
-            valid = "2.3, 2.5, 6.0")
+            valid = { "2.3", "2.5", "6.0" })
     String strutsVersion;
 
     @Override
