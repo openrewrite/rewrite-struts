@@ -33,8 +33,13 @@ recipeList:
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
 displayName: Upgrade Struts 6.0 dependencies
-description: Upgrade Struts 2.x dependencies to Struts 6.0
+description: Upgrade Struts 2.x dependencies to Struts 6.0.
 recipeList:
+  - org.openrewrite.java.dependencies.ChangeDependency:
+      oldGroupId: org.apache.struts
+      oldArtifactId: struts-core
+      newArtifactId: struts2-core
+      newVersion: 6.x
   - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
       groupId: org.apache.struts
       artifactId: '*'
