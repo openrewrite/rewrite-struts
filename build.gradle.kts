@@ -26,22 +26,20 @@ configurations {
 }
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
-
 dependencies {
-    // The bom version can also be set to a specific version
-    // https://github.com/openrewrite/rewrite-recipe-bom/releases
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:$rewriteVersion"))
+    implementation(platform("org.openrewrite:rewrite-bom:$rewriteVersion"))
 
     implementation("org.openrewrite:rewrite-java")
-    implementation("org.openrewrite.recipe:rewrite-java-dependencies")
-    implementation("org.openrewrite.meta:rewrite-analysis")
     implementation("org.openrewrite:rewrite-xml")
     runtimeOnly("org.openrewrite:rewrite-java-17")
+
+    implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
+    implementation("org.openrewrite.meta:rewrite-analysis:$rewriteVersion")
 
     // Refaster style recipes need the rewrite-templating annotation processor and dependency for generated recipes
     // https://github.com/openrewrite/rewrite-templating/releases
     annotationProcessor("org.openrewrite:rewrite-templating:$rewriteVersion")
-    implementation("org.openrewrite:rewrite-templating")
+    implementation("org.openrewrite:rewrite-templating:$rewriteVersion")
 
     // Need to have a slf4j binding to see any output enabled from the parser.
     runtimeOnly("ch.qos.logback:logback-classic:1.2.+")
