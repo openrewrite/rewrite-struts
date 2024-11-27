@@ -45,6 +45,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic:1.2.+")
 
     testImplementation("org.openrewrite:rewrite-maven")
+    testImplementation("org.openrewrite:rewrite-test")
     "testWithStruts6Implementation"("org.apache.struts:struts2-core:latest.release")
 }
 
