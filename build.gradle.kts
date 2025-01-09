@@ -25,21 +25,21 @@ configurations {
     }
 }
 
-val rewriteVersion = rewriteRecipe.rewriteVersion.get()
+val rewriteVersion = "latest.release"
 dependencies {
-    implementation(platform("org.openrewrite:rewrite-bom:$rewriteVersion"))
+    implementation(platform("org.openrewrite:rewrite-bom:8.41.1"))
 
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-xml")
     runtimeOnly("org.openrewrite:rewrite-java-17")
 
-    implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
-    implementation("org.openrewrite.meta:rewrite-analysis:$rewriteVersion")
+    implementation("org.openrewrite.recipe:rewrite-java-dependencies:1.24.1")
+    implementation("org.openrewrite.meta:rewrite-analysis:2.13.1")
 
     // Refaster style recipes need the rewrite-templating annotation processor and dependency for generated recipes
     // https://github.com/openrewrite/rewrite-templating/releases
-    annotationProcessor("org.openrewrite:rewrite-templating:$rewriteVersion")
-    implementation("org.openrewrite:rewrite-templating:$rewriteVersion")
+    annotationProcessor("org.openrewrite:rewrite-templating:1.19.1")
+    implementation("org.openrewrite:rewrite-templating:1.19.1")
 
     // Need to have a slf4j binding to see any output enabled from the parser.
     runtimeOnly("ch.qos.logback:logback-classic:1.2.+")
