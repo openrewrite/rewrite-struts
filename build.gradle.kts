@@ -48,20 +48,3 @@ dependencies {
     testImplementation("org.openrewrite:rewrite-test")
     "testWithStruts6Implementation"("org.apache.struts:struts2-core:latest.release")
 }
-
-configure<PublishingExtension> {
-    publications {
-        named("nebula", MavenPublication::class.java) {
-            suppressPomMetadataWarningsFor("runtimeElements")
-        }
-    }
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "moderne"
-            url = uri("https://us-west1-maven.pkg.dev/moderne-dev/moderne-recipe")
-        }
-    }
-}
