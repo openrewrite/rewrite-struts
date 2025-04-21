@@ -1,0 +1,77 @@
+# Copyright 2025 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.MigrateStrutsDtd
+examples:
+- description: ''
+  parameters:
+  - '6.0'
+  sources:
+  - before: |
+      <!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+      <struts/>
+    after: |
+      <!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 6.0//EN"
+        "https://struts.apache.org/dtds/struts-6.0.dtd">
+      <struts/>
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
+examples:
+- description: ''
+  sources:
+  - before: |2
+        <project>
+          <groupId>group</groupId>
+          <artifactId>artifact</artifactId>
+          <version>1</version>
+          <properties>
+              <struts2.version>2.5.22</struts2.version>
+          </properties>
+          <dependencies>
+              <dependency>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts2-config-browser-plugin</artifactId>
+                  <version>${struts2.version}</version>
+              </dependency>
+              <dependency>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts2-core</artifactId>
+                  <version>${struts2.version}</version>
+                  <exclusions>
+                      <exclusion>
+                          <groupId>com.sun</groupId>
+                          <artifactId>tools</artifactId>
+                      </exclusion>
+                  </exclusions>
+              </dependency>
+              <dependency>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts2-spring-plugin</artifactId>
+                  <version>${struts2.version}</version>
+              </dependency>
+              <dependency>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts2-json-plugin</artifactId>
+                  <version>${struts2.version}</version>
+              </dependency>
+          </dependencies>
+      </project>
+    path: pom.xml
+    language: xml
