@@ -30,8 +30,8 @@ class UpgradeStruts6DependenciesTest implements RewriteTest {
         spec.recipeFromResources("org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies");
     }
 
-    @Test
     @DocumentExample
+    @Test
     void upgradeDependencies() {
         rewriteRun(
           pomXml(

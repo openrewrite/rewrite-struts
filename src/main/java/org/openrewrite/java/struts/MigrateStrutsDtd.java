@@ -23,8 +23,8 @@ import org.openrewrite.java.struts.search.FindStrutsXml;
 import org.openrewrite.xml.XmlIsoVisitor;
 import org.openrewrite.xml.tree.Xml;
 
-@Value
 @EqualsAndHashCode(callSuper = false)
+@Value
 public class MigrateStrutsDtd extends Recipe {
 
     @Option(displayName = "Struts version",
