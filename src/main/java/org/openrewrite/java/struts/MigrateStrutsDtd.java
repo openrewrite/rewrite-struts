@@ -51,7 +51,8 @@ public class MigrateStrutsDtd extends Recipe {
                 return docTypeDecl.withInternalSubset(ListUtils.map(docTypeDecl.getInternalSubset(), (n, ref) -> {
                     if (n == 0 && !ref.getName().equals("\"-//Apache Software Foundation//DTD Struts Configuration " + strutsVersion + "//EN\"")) {
                         return ref.withName("\"-//Apache Software Foundation//DTD Struts Configuration " + strutsVersion + "//EN\"");
-                    } else if (n == 1 && !ref.getName().equals("\"https://struts.apache.org/dtds/struts-" + strutsVersion + ".dtd\"")) {
+                    }
+                    if (n == 1 && !ref.getName().equals("\"https://struts.apache.org/dtds/struts-" + strutsVersion + ".dtd\"")) {
                         return ref.withName("\"https://struts.apache.org/dtds/struts-" + strutsVersion + ".dtd\"");
                     }
                     return ref;
