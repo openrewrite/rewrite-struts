@@ -24,7 +24,7 @@ import org.openrewrite.xml.XmlIsoVisitor;
 import org.openrewrite.xml.search.FindTags;
 import org.openrewrite.xml.tree.Xml;
 
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.joining;
 
 public class FindStrutsActions extends Recipe {
     private final transient StrutsActions actions = new StrutsActions(this);
@@ -50,7 +50,7 @@ public class FindStrutsActions extends Recipe {
                             .map(Xml.Tag.class::cast)
                             .filter(t -> "package".equals(t.getName()))
                             .map(t -> TagUtils.getAttribute(t, "name", ""))
-                            .collect(Collectors.joining("."));
+                            .collect(joining("."));
                     actions.insertRow(ctx, new StrutsActions.Row(
                             getCursor().firstEnclosingOrThrow(SourceFile.class).getSourcePath().toString(),
                             pkg,
