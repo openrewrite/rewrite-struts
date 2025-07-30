@@ -48,7 +48,7 @@ public class FindStrutsActions extends Recipe {
                 if (actionMatcher.matches(getCursor())) {
                     String pkg = getCursor().getPathAsStream(Xml.Tag.class::isInstance)
                             .map(Xml.Tag.class::cast)
-                            .filter(t -> t.getName().equals("package"))
+                            .filter(t -> "package".equals(t.getName()))
                             .map(t -> TagUtils.getAttribute(t, "name", ""))
                             .collect(Collectors.joining("."));
                     actions.insertRow(ctx, new StrutsActions.Row(
