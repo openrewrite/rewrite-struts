@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.java.struts;
+package org.openrewrite.java.struts.migrate6;
 
 import org.junit.jupiter.api.Test;
-import org.openrewrite.config.Environment;
+import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -27,11 +28,9 @@ class MigrateStruts6ConstantsTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(Environment.builder()
-            .scanYamlResources()
-            .build()
-            .activateRecipes("org.openrewrite.java.struts.migrate6.MigrateStruts6Constants"))
-          .expectedCyclesThatMakeChanges(1).cycles(1);
+        spec.recipeFromResources("org.openrewrite.java.struts.migrate6.MigrateStruts6Constants")
+          .parser(JavaParser.fromJavaVersion()
+            .classpathFromResources(new InMemoryExecutionContext(), "struts2-core-2.5"));
     }
 
     @Test
