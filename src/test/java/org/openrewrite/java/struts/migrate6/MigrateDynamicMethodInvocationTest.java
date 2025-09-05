@@ -309,4 +309,35 @@ class MigrateDynamicMethodInvocationTest implements RewriteTest {
           )
         );
     }
+
+    @Test
+    void migrateWhenConstantAfterPackage() {
+        rewriteRun(
+          //language=xml
+          xml(
+            """
+              <struts>
+                  <package name="crud" extends="struts-default">
+                      <action name="user" class="com.example.UserAction">
+                          <result name="edit">/editUser.jsp</result>
+                      </action>
+                  </package>
+
+                  <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+              </struts>
+              """,
+            """
+              <struts>
+                  <package name="crud" extends="struts-default">
+                      <action name="userEdit" class="com.example.UserAction" method="edit">
+                          <result name="edit">/editUser.jsp</result>
+                      </action>
+                  </package>
+
+                  <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+              </struts>
+              """
+          )
+        );
+    }
 }
