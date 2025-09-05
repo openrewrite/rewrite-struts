@@ -17,20 +17,9 @@ dependencies {
 
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-xml")
-    runtimeOnly("org.openrewrite:rewrite-java-17")
+    runtimeOnly("org.openrewrite:rewrite-java-21")
 
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
-    implementation("org.openrewrite.meta:rewrite-analysis:$rewriteVersion")
-
-    annotationProcessor("org.openrewrite:rewrite-templating:$rewriteVersion")
-    implementation("org.openrewrite:rewrite-templating:$rewriteVersion")
-    compileOnly("com.google.errorprone:error_prone_core:2.+") {
-        exclude("com.google.auto.service", "auto-service-annotations")
-        exclude("io.github.eisop","dataflow-errorprone")
-    }
-
-    // Need to have a slf4j binding to see any output enabled from the parser.
-    runtimeOnly("ch.qos.logback:logback-classic:1.2.+")
 
     testImplementation("org.openrewrite:rewrite-maven")
     testImplementation("org.openrewrite:rewrite-test")
