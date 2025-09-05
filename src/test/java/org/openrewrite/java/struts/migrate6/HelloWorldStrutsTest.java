@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openrewrite.java.struts;
+package org.openrewrite.java.struts.migrate6;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
@@ -27,14 +28,13 @@ import static org.openrewrite.test.SourceSpecs.dir;
 import static org.openrewrite.test.SourceSpecs.text;
 import static org.openrewrite.xml.Assertions.xml;
 
-@SuppressWarnings("TrailingWhitespacesInTextBlock")
 class HelloWorldStrutsTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.parser(JavaParser.fromJavaVersion()
-            .classpath("struts2-core"))
-          .recipe(Recipe.noop());
+        spec.recipe(Recipe.noop())
+          .parser(JavaParser.fromJavaVersion()
+            .classpathFromResources(new InMemoryExecutionContext(), "struts2-core-6.0"));
     }
 
     @Test
@@ -44,14 +44,14 @@ class HelloWorldStrutsTest implements RewriteTest {
           java(
             """
               package org.apache.struts.helloworld.model;
-                            
+
               public class MessageStore {
                   private String message;
-                            
+
                   public MessageStore() {
                       message = "Hello Struts User";
                   }
-                            
+
                   public String getMessage() {
                       return message;
                   }
@@ -62,18 +62,18 @@ class HelloWorldStrutsTest implements RewriteTest {
           java(
             """
               package org.apache.struts.helloworld.action;
-                            
+
               import org.apache.struts.helloworld.model.MessageStore;
               import com.opensymphony.xwork2.ActionSupport;
-                            
+
               public class HelloWorldAction extends ActionSupport {
                   private MessageStore messageStore;
-                  
+
                   public String execute() {
                       messageStore = new MessageStore() ;
                       return SUCCESS;
                   }
-                  
+
                   public MessageStore getMessageStore() {
                       return messageStore;
                   }
@@ -90,12 +90,12 @@ class HelloWorldStrutsTest implements RewriteTest {
                     "http://struts.apache.org/dtds/struts-2.5.dtd">
                 <struts>
                     <constant name="struts.devMode" value="true" />
-                              
+
                     <package name="basicstruts2" extends="struts-default">
                         <action name="index">
                             <result>/index.jsp</result>
                         </action>
-                    
+
                         <action name="hello" class="org.apache.struts.helloworld.action.HelloWorldAction" method="execute">
                             <result name="success">/HelloWorld.jsp</result>
                         </action>
@@ -106,6 +106,7 @@ class HelloWorldStrutsTest implements RewriteTest {
             )
           ),
           dir("src/main/webapp",
+            //language=xml
             text(
               """
                 <!DOCTYPE html>

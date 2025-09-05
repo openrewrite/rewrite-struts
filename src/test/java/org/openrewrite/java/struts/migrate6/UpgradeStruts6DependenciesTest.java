@@ -17,6 +17,8 @@ package org.openrewrite.java.struts.migrate6;
 
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -27,7 +29,9 @@ class UpgradeStruts6DependenciesTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipeFromResources("org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies");
+        spec.recipeFromResources("org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies")
+          .parser(JavaParser.fromJavaVersion()
+            .classpathFromResources(new InMemoryExecutionContext(), "struts2-core-2.5"));
     }
 
     @DocumentExample
