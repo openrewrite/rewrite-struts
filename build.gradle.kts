@@ -23,6 +23,8 @@ dependencies {
 
     testImplementation("org.openrewrite:rewrite-maven")
     testImplementation("org.openrewrite:rewrite-test")
+
+    testRuntimeOnly("javax.servlet:javax.servlet-api:4.0.1")
 }
 
 tasks.withType<JavaCompile> {
