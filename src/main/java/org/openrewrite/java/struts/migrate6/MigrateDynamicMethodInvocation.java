@@ -49,7 +49,7 @@ public class MigrateDynamicMethodInvocation extends Recipe {
     @Override
     public String getDescription() {
         return "Identifies Struts configurations using Dynamic Method Invocation (DMI) and marks them for migration, " +
-               "as DMI is disabled by default in Struts 6 for security reasons.";
+                "as DMI is disabled by default in Struts 6 for security reasons.";
     }
 
     @Override
@@ -77,37 +77,19 @@ public class MigrateDynamicMethodInvocation extends Recipe {
         public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
             Xml.Tag t = super.visitTag(tag, ctx);
 
-            if ("package".equals(t.getName())) {
-                t = migratePackageActions(t);
+            if ("package".equals(t.getName()) && t.getContent() != null) {
+                return t.withContent(ListUtils.flatMap(t.getContent(), content -> {
+                    if (content instanceof Xml.Tag) {
+                        Xml.Tag contentTag = (Xml.Tag) content;
+                        if ("action".equals(contentTag.getName()) && TagUtils.getAttribute(contentTag, "method", "").isEmpty()) {
+                            return splitActionByResults(contentTag);
+                        }
+                    }
+                    return content;
+                }));
             }
 
             return t;
-        }
-
-        private Xml.Tag migratePackageActions(Xml.Tag packageTag) {
-            if (packageTag.getContent() == null) {
-                return packageTag;
-            }
-
-            List<Content> newContent = new ArrayList<>();
-            for (Content content : packageTag.getContent()) {
-                if (content instanceof Xml.Tag) {
-                    Xml.Tag tag = (Xml.Tag) content;
-                    if ("action".equals(tag.getName())) {
-                        String method = TagUtils.getAttribute(tag, "method", "");
-                        if (method.isEmpty()) {
-                            List<Xml.Tag> splitActions = splitActionByResults(tag);
-                            if (!splitActions.isEmpty()) {
-                                newContent.addAll(splitActions);
-                                continue;
-                            }
-                        }
-                    }
-                }
-                newContent.add(content);
-            }
-
-            return packageTag.withContent(newContent);
         }
 
         private List<Xml.Tag> splitActionByResults(Xml.Tag action) {
@@ -144,11 +126,11 @@ public class MigrateDynamicMethodInvocation extends Recipe {
 
         private boolean isDefaultResult(String resultName) {
             return resultName.isEmpty() ||
-                   "success".equals(resultName) ||
-                   "error".equals(resultName) ||
-                   "input".equals(resultName) ||
-                   "login".equals(resultName) ||
-                   "none".equals(resultName);
+                    "success".equals(resultName) ||
+                    "error".equals(resultName) ||
+                    "input".equals(resultName) ||
+                    "login".equals(resultName) ||
+                    "none".equals(resultName);
         }
 
 
