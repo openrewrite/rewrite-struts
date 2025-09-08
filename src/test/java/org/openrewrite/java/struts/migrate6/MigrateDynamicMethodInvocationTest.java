@@ -230,13 +230,6 @@ class MigrateDynamicMethodInvocationTest implements RewriteTest {
                   <constant name="struts.devMode" value="true"/>
                   <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
                   <constant name="struts.i18n.encoding" value="UTF-8"/>
-
-                  <package name="app" extends="struts-default">
-                      <action name="test" class="com.example.TestAction">
-                          <result name="foo">/foo.jsp</result>
-                          <result name="bar">/bar.jsp</result>
-                      </action>
-                  </package>
               </struts>
               """,
             """
@@ -244,15 +237,6 @@ class MigrateDynamicMethodInvocationTest implements RewriteTest {
                   <constant name="struts.devMode" value="true"/>
                   <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
                   <constant name="struts.i18n.encoding" value="UTF-8"/>
-
-                  <package name="app" extends="struts-default">
-                      <action name="testFoo" class="com.example.TestAction" method="foo">
-                          <result name="foo">/foo.jsp</result>
-                      </action>
-                      <action name="testBar" class="com.example.TestAction" method="bar">
-                          <result name="bar">/bar.jsp</result>
-                      </action>
-                  </package>
               </struts>
               """
           )

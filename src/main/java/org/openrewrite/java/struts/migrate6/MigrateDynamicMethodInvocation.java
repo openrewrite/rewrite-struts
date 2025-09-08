@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2025 the original author or authors.
  * <p>
  * Licensed under the Moderne Source Available License (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.java.struts.internal.TagUtils;
 import org.openrewrite.java.struts.search.FindStrutsXml;
+import org.openrewrite.xml.ChangeTagAttribute;
 import org.openrewrite.xml.XPathMatcher;
 import org.openrewrite.xml.XmlIsoVisitor;
 import org.openrewrite.xml.tree.Content;
@@ -37,7 +38,8 @@ import static org.openrewrite.marker.Markers.EMPTY;
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class MigrateDynamicMethodInvocation extends Recipe {
-    private static final XPathMatcher DMI_CONSTANT = new XPathMatcher("/struts/constant[@name='struts.enable.DynamicMethodInvocation']");
+    private static final String STRUTS_ENABLE_DYNAMIC_METHOD_INVOCATION = "/struts/constant[@name='struts.enable.DynamicMethodInvocation']";
+    private static final XPathMatcher DMI_CONSTANT = new XPathMatcher(STRUTS_ENABLE_DYNAMIC_METHOD_INVOCATION);
 
     @Override
     public String getDisplayName() {
@@ -59,14 +61,9 @@ public class MigrateDynamicMethodInvocation extends Recipe {
                     public Xml.Tag visitTag(Xml.Tag tag, ExecutionContext ctx) {
                         Xml.Tag t = super.visitTag(tag, ctx);
 
-                        if (DMI_CONSTANT.matches(getCursor())) {
-                            String value = TagUtils.getAttribute(t, "value", "false");
-                            if ("true".equals(value)) {
-                                t = t.withAttributes(
-                                        ListUtils.map(t.getAttributes(), it -> "value".equals(it.getKey().getName()) ? it.withValue(it.getValue().withValue("false")) : it)
-                                );
-                                doAfterVisit(new ActionMigrator());
-                            }
+                        if (DMI_CONSTANT.matches(getCursor()) && "true".equals(TagUtils.getAttribute(t, "value", "false"))) {
+                            doAfterVisit(new ChangeTagAttribute(STRUTS_ENABLE_DYNAMIC_METHOD_INVOCATION, "value", "false", "true", null).getVisitor());
+                            doAfterVisit(new ActionMigrator());
                         }
 
                         return t;
