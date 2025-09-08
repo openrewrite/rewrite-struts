@@ -18,7 +18,6 @@ package org.openrewrite.java.struts.migrate6;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.*;
-import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.java.struts.internal.TagUtils;
 import org.openrewrite.java.struts.search.FindStrutsXml;
