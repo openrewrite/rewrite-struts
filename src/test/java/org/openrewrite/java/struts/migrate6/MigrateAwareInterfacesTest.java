@@ -36,27 +36,20 @@ class MigrateAwareInterfacesTest implements RewriteTest {
 
     @DocumentExample
     @Test
-    void migrateApplicationAwareAndSessionAware() {
+    void migrateSessionAware() {
         rewriteRun(
           //language=java
           java(
             """
               import com.opensymphony.xwork2.ActionInvocation;
               import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-              import org.apache.struts2.interceptor.ApplicationAware;
               import org.apache.struts2.interceptor.SessionAware;
 
               import java.util.Map;
 
-              public class CustomSecurityInterceptor extends AbstractInterceptor implements ApplicationAware, SessionAware {
+              public class CustomSecurityInterceptor extends AbstractInterceptor implements SessionAware {
 
-                  private Map<String, Object> application;
                   private Map<String, Object> session;
-
-                  @Override
-                  public void setApplication(Map<String, Object> application) {
-                      this.application = application;
-                  }
 
                   @Override
                   public void setSession(Map<String, Object> session) {
@@ -72,20 +65,13 @@ class MigrateAwareInterfacesTest implements RewriteTest {
             """
               import com.opensymphony.xwork2.ActionInvocation;
               import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-              import org.apache.struts2.action.ApplicationAware;
               import org.apache.struts2.action.SessionAware;
 
               import java.util.Map;
 
-              public class CustomSecurityInterceptor extends AbstractInterceptor implements ApplicationAware, SessionAware {
+              public class CustomSecurityInterceptor extends AbstractInterceptor implements SessionAware {
 
-                  private Map<String, Object> application;
                   private Map<String, Object> session;
-
-                  @Override
-                  public void withApplication(Map<String, Object> application) {
-                      this.application = application;
-                  }
 
                   @Override
                   public void withSession(Map<String, Object> session) {
