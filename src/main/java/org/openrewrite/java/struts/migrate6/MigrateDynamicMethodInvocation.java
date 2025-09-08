@@ -18,6 +18,7 @@ package org.openrewrite.java.struts.migrate6;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.*;
+import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.java.struts.internal.TagUtils;
 import org.openrewrite.java.struts.search.FindStrutsXml;
@@ -134,7 +135,8 @@ public class MigrateDynamicMethodInvocation extends Recipe {
 
 
         private Xml.Attribute createAttribute(String name, String newActionName) {
-            return new Xml.Attribute(Tree.randomId(),
+            return new Xml.Attribute(
+                    Tree.randomId(),
                     " ",
                     EMPTY,
                     new Xml.Ident(Tree.randomId(), "", EMPTY, name),
