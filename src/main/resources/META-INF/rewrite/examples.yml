@@ -32,6 +32,86 @@ examples:
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
+examples:
+- description: ''
+  sources:
+  - before: |
+      import com.opensymphony.xwork2.ActionInvocation;
+      import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+      import org.apache.struts2.interceptor.SessionAware;
+
+      import java.util.Map;
+
+      public class CustomSecurityInterceptor extends AbstractInterceptor implements SessionAware {
+
+          private Map<String, Object> session;
+
+          @Override
+          public void setSession(Map<String, Object> session) {
+              this.session = session;
+          }
+
+          @Override
+          public String intercept(ActionInvocation invocation) throws Exception {
+              return invocation.invoke();
+          }
+      }
+    after: |
+      import com.opensymphony.xwork2.ActionInvocation;
+      import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+      import org.apache.struts2.action.SessionAware;
+
+      import java.util.Map;
+
+      public class CustomSecurityInterceptor extends AbstractInterceptor implements SessionAware {
+
+          private Map<String, Object> session;
+
+          @Override
+          public void withSession(Map<String, Object> session) {
+              this.session = session;
+          }
+
+          @Override
+          public String intercept(ActionInvocation invocation) throws Exception {
+              return invocation.invoke();
+          }
+      }
+    language: java
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate6.MigrateDynamicMethodInvocation
+examples:
+- description: ''
+  sources:
+  - before: |
+      <struts>
+          <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+
+          <package name="crud" extends="struts-default">
+              <action name="user" class="com.example.UserAction">
+                  <result name="list">/users.jsp</result>
+                  <result name="edit">/editUser.jsp</result>
+              </action>
+          </package>
+      </struts>
+    after: |
+      <struts>
+          <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+
+          <package name="crud" extends="struts-default">
+              <action name="userList" class="com.example.UserAction" method="list">
+                  <result name="list">/users.jsp</result>
+              </action>
+              <action name="userEdit" class="com.example.UserAction" method="edit">
+                  <result name="edit">/editUser.jsp</result>
+              </action>
+          </package>
+      </struts>
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
 examples:
 - description: ''
