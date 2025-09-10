@@ -26,6 +26,7 @@ displayName: Migrate to Struts 6.0
 description: Migrate Struts 2.x to Struts 6.0
 recipeList:
   - org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
+  - org.openrewrite.java.struts.migrate6.MigrateDynamicMethodInvocation
   - org.openrewrite.java.struts.migrate6.MigrateOpenSymphonyClasses
   - org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
   - org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
