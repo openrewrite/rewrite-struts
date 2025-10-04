@@ -16,6 +16,7 @@
 package org.openrewrite.java.struts.migrate6;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
@@ -33,6 +34,7 @@ class MigrateStruts6ConstantsTest implements RewriteTest {
             .classpathFromResources(new InMemoryExecutionContext(), "struts2-core-2.5"));
     }
 
+    @DocumentExample
     @Test
     void inStrutsXml() {
         rewriteRun(

@@ -16,6 +16,7 @@
 package org.openrewrite.java.struts.search;
 
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -29,6 +30,7 @@ class FindStrutsActionTest implements RewriteTest {
         spec.recipe(new FindStrutsActions());
     }
 
+    @DocumentExample
     @Test
     void findActions() {
         rewriteRun(
