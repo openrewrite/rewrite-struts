@@ -15,7 +15,7 @@
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.MigrateStrutsDtd
 examples:
-- description: ''
+- description: '`MigrateStrutsDtdTest#updateStrutsDtdFrom2_5To6`'
   parameters:
   - '6.0'
   sources:
@@ -34,7 +34,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
 examples:
-- description: ''
+- description: '`MigrateAwareInterfacesTest#migrateSessionAware`'
   sources:
   - before: |
       import com.opensymphony.xwork2.ActionInvocation;
@@ -83,7 +83,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.MigrateDynamicMethodInvocation
 examples:
-- description: ''
+- description: '`MigrateDynamicMethodInvocationTest#migrateSimpleActionWithMultipleResults`'
   sources:
   - before: |
       <struts>
@@ -114,7 +114,7 @@ examples:
 type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
 examples:
-- description: ''
+- description: '`UpgradeStruts6DependenciesTest#upgradeDependencies`'
   sources:
   - before: |2
         <project>
