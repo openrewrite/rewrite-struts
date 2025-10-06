@@ -112,6 +112,29 @@ examples:
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
+examples:
+- description: '`MigrateStruts6ConstantsTest#inStrutsXml`'
+  sources:
+  - before: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE struts PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+          "http://struts.apache.org/dtds/struts-2.5.dtd">
+      <struts>
+          <constant name="devMode" value="true" />
+      </struts>
+    after: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE struts PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+          "http://struts.apache.org/dtds/struts-2.5.dtd">
+      <struts>
+          <constant name="struts.devMode" value="true" />
+      </struts>
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
 examples:
 - description: '`UpgradeStruts6DependenciesTest#upgradeDependencies`'
@@ -154,4 +177,33 @@ examples:
           </dependencies>
       </project>
     path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.search.FindStrutsActions
+examples:
+- description: '`FindStrutsActionTest#findActions`'
+  sources:
+  - before: |
+      <struts>
+          <package name="basicstruts2" extends="struts-default">
+              <action name="index">
+                  <result>/index.jsp</result>
+              </action>
+              <action name="hello" class="org.apache.struts.helloworld.action.HelloWorldAction" method="execute">
+                  <result name="success">/HelloWorld.jsp</result>
+              </action>
+          </package>
+      </struts>
+    after: |
+      <struts>
+          <package name="basicstruts2" extends="struts-default">
+              <!--~~>--><action name="index">
+                  <result>/index.jsp</result>
+              </action>
+              <!--~~>--><action name="hello" class="org.apache.struts.helloworld.action.HelloWorldAction" method="execute">
+                  <result name="success">/HelloWorld.jsp</result>
+              </action>
+          </package>
+      </struts>
     language: xml
