@@ -17,7 +17,6 @@ dependencies {
 
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-xml")
-    runtimeOnly("org.openrewrite:rewrite-java-21")
 
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
 
