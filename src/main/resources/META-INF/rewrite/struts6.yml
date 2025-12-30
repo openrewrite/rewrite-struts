@@ -23,7 +23,7 @@ description: Migrate to Struts 6.0. The full migration guide can be found [here]
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.MigrateStruts6
 displayName: Migrate to Struts 6.0
-description: Migrate Struts 2.x to Struts 6.0
+description: Migrate Struts 2.x to Struts 6.0.
 recipeList:
   - org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
   - org.openrewrite.java.struts.migrate6.MigrateDynamicMethodInvocation
