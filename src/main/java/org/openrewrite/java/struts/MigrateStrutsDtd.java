@@ -33,15 +33,9 @@ public class MigrateStrutsDtd extends Recipe {
             valid = { "2.3", "2.5", "6.0" })
     String strutsVersion;
 
-    @Override
-    public String getDisplayName() {
-        return "Migrate DTD to a specific Struts version";
-    }
+    String displayName = "Migrate DTD to a specific Struts version";
 
-    @Override
-    public String getDescription() {
-        return "Update Struts DTD to reflect the specified version.";
-    }
+    String description = "Update Struts DTD to reflect the specified version.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

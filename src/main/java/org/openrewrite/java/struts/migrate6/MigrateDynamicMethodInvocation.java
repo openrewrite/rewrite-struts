@@ -41,16 +41,10 @@ public class MigrateDynamicMethodInvocation extends Recipe {
     private static final String STRUTS_ENABLE_DYNAMIC_METHOD_INVOCATION = "/struts/constant[@name='struts.enable.DynamicMethodInvocation']";
     private static final XPathMatcher DMI_CONSTANT = new XPathMatcher(STRUTS_ENABLE_DYNAMIC_METHOD_INVOCATION);
 
-    @Override
-    public String getDisplayName() {
-        return "Migrate Dynamic Method Invocation to explicit action mappings";
-    }
+    String displayName = "Migrate Dynamic Method Invocation to explicit action mappings";
 
-    @Override
-    public String getDescription() {
-        return "Identifies Struts configurations using Dynamic Method Invocation (DMI) and marks them for migration, " +
+    String description = "Identifies Struts configurations using Dynamic Method Invocation (DMI) and marks them for migration, " +
                 "as DMI is disabled by default in Struts 6 for security reasons.";
-    }
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
