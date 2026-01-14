@@ -15,6 +15,7 @@
  */
 package org.openrewrite.java.struts.search;
 
+import lombok.Getter;
 import org.openrewrite.*;
 import org.openrewrite.java.struts.internal.TagUtils;
 import org.openrewrite.java.struts.table.StrutsActions;
@@ -29,15 +30,11 @@ import static java.util.stream.Collectors.joining;
 public class FindStrutsActions extends Recipe {
     private final transient StrutsActions actions = new StrutsActions(this);
 
-    @Override
-    public String getDisplayName() {
-        return "Find Struts actions";
-    }
+    @Getter
+    final String displayName = "Find Struts actions";
 
-    @Override
-    public String getDescription() {
-        return "Find actions and their associated definitions.";
-    }
+    @Getter
+    final String description = "Find actions and their associated definitions.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

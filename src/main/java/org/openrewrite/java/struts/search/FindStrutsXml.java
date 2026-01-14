@@ -15,22 +15,19 @@
  */
 package org.openrewrite.java.struts.search;
 
+import lombok.Getter;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.xml.search.FindTags;
 
 public class FindStrutsXml extends Recipe {
-    @Override
-    public String getDisplayName() {
-        return "Find struts XML files";
-    }
+    @Getter
+    final String displayName = "Find struts XML files";
 
-    @Override
-    public String getDescription() {
-        return "Struts XML files may have any name, and may be outside a resources directory, so " +
-               "the true test is to look at the content of the file.";
-    }
+    @Getter
+    final String description = "Struts XML files may have any name, and may be outside a resources directory, so " +
+            "the true test is to look at the content of the file.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
