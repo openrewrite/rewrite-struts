@@ -79,8 +79,7 @@ class UpgradeStruts6DependenciesTest implements RewriteTest {
               </project>
               """,
             spec -> spec.after(pomXml -> {
-                assertThat(pomXml).contains("<struts2.version>6.");
-                return pomXml;
+                return assertThat(pomXml).contains("<struts2.version>6.").actual();
             })
           )
         );
@@ -106,8 +105,7 @@ class UpgradeStruts6DependenciesTest implements RewriteTest {
               </project>
               """,
             spec -> spec.after(pomXml -> {
-                assertThat(pomXml).contains("<version>6.");
-                return pomXml;
+                return assertThat(pomXml).contains("<version>6.").actual();
             })
           )
         );
