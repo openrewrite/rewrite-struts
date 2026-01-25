@@ -13,13 +13,13 @@ recipeDependencies {
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
-    implementation(platform("org.openrewrite:rewrite-bom:$rewriteVersion"))
+    implementation(platform("org.openrewrite:rewrite-bom:8.72.2"))
 
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite:rewrite-xml")
     runtimeOnly("org.openrewrite:rewrite-java-21")
 
-    implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
+    implementation("org.openrewrite.recipe:rewrite-java-dependencies:1.50.0")
 
     testImplementation("org.openrewrite:rewrite-maven")
     testImplementation("org.openrewrite:rewrite-test")
