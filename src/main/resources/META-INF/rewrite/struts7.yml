@@ -1,76 +1,39 @@
 ---
+type: specs.openrewrite.org/v1beta/category
+name: Struts 7.0
+packageName: org.openrewrite.java.struts.migrate7
+description: Migrate to Struts 7.0. The full migration guide can be found [here](https://cwiki.apache.org/confluence/display/WW/Struts+6.x.x+to+7.x.x+migration).
+---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.example.struts.migrate7.MigrateStruts7
-displayName: Migrate Struts 6 → Struts 7
-description: >
-  Migrates Struts 6.x applications to Struts 7.x by updating
-  restructured OpenSymphony/XWork classe and aligning XML constants.
+name: org.openrewrite.java.struts.migrate7.MigrateStruts7
+displayName: Migrate to Struts 7.0
+description: Migrate Struts 6.x.x to Struts 7.1.1
 
 recipeList:
-  - com.example.struts.migrate7.RenameOpenSymphonyToStruts2
-  - com.example.struts.migrate7.UpdateStruts7Constants
-  - com.example.struts.migrate7.UpgradeStruts7Dependencies
+  - org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
+  - org.openrewrite.java.struts.migrate7.UpdateStruts7Constants
+  - org.openrewrite.java.struts.migrate7.UpgradeStruts7Dependencies
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.example.struts.migrate7.RenameOpenSymphonyToStruts2
+name: org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
 displayName: Rename OpenSymphony / XWork classes to Struts 7 packages
 description: Updates classes moved from com.opensymphony.xwork2.* to their new org.apache.struts2.* packages in Struts 7.
 
 recipeList:
 
-  # ------------------------------------------------------------------
   # Core Action & Context
-  # ------------------------------------------------------------------
+  # moved under action sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.Action
       newFullyQualifiedTypeName: org.apache.struts2.action.Action
 
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.ActionSupport
-      newFullyQualifiedTypeName: org.apache.struts2.ActionSupport
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.ActionInvocation
-      newFullyQualifiedTypeName: org.apache.struts2.ActionInvocation
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.ActionContext
-      newFullyQualifiedTypeName: org.apache.struts2.ActionContext
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.opensymphony.xwork2.ActionChainResult
+      oldFullyQualifiedTypeName: com.opensymphony.xwork2.ActionChainResult
       newFullyQualifiedTypeName: org.apache.struts2.result.ActionChainResult
 
-  # ------------------------------------------------------------------
-  # Interceptors & Validation
-  # ------------------------------------------------------------------
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.interceptor.Interceptor
-      newFullyQualifiedTypeName: org.apache.struts2.interceptor.Interceptor
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.interceptor.ValidationAware
-      newFullyQualifiedTypeName: org.apache.struts2.interceptor.ValidationAware
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.Preparable
-      newFullyQualifiedTypeName: org.apache.struts2.Preparable
-
-  # ------------------------------------------------------------------
-  # ValueStack & Utilities
-  # ------------------------------------------------------------------
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.util.ValueStack
-      newFullyQualifiedTypeName: org.apache.struts2.util.ValueStack
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.opensymphony.xwork2.util.AnnotationUtils
-      newFullyQualifiedTypeName: org.apache.struts2.util.AnnotationUtils
-
-  # ------------------------------------------------------------------
-  # Text / i18n
-  # ------------------------------------------------------------------
+  # ext / i18n (moved from com.opensymphony.xwork2 to org.apache.struts2.text)
+  # moved under text sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.TextProvider
       newFullyQualifiedTypeName: org.apache.struts2.text.TextProvider
@@ -100,6 +63,7 @@ recipeList:
       newFullyQualifiedTypeName: org.apache.struts2.text.TextProviderSupport
 
   # util → text
+  # moved under action text sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.util.AbstractLocalizedTextProvider
       newFullyQualifiedTypeName: org.apache.struts2.text.AbstractLocalizedTextProvider
@@ -112,9 +76,8 @@ recipeList:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.util.StrutsLocalizedTextProvider
       newFullyQualifiedTypeName: org.apache.struts2.text.StrutsLocalizedTextProvider
 
-  # ------------------------------------------------------------------
   # Locale
-  # ------------------------------------------------------------------
+  # moved under action locale sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.DefaultLocaleProvider
       newFullyQualifiedTypeName: org.apache.struts2.locale.DefaultLocaleProvider
@@ -141,7 +104,7 @@ recipeList:
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.example.struts.migrate7.UpdateStruts7Constants
+name: org.openrewrite.java.struts.migrate7.UpdateStruts7Constants
 displayName: Align Struts XML constants for Struts 7
 description: Updates Struts XML constants that were renamed or tightened in Struts 7.
 
@@ -166,7 +129,7 @@ recipeList:
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.example.struts.migrate7.UpgradeStruts7Dependencies
+name: org.openrewrite.java.struts.migrate7.UpgradeStruts7Dependencies
 displayName: Upgrade Apache Struts dependencies to 7.1.1
 description: Updates all Maven dependencies from the org.apache.struts group to version 7.1.1 when migrating to Struts 7.
 

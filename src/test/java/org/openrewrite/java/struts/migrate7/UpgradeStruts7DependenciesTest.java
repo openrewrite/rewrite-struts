@@ -30,7 +30,7 @@ class UpgradeStruts7DependenciesTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipeFromResources("com.example.struts.migrate7.UpgradeStruts7Dependencies")
+        spec.recipeFromResources("org.openrewrite.java.struts.migrate7.UpgradeStruts7Dependencies")
           .parser(JavaParser.fromJavaVersion()
             .classpathFromResources(new InMemoryExecutionContext(), "struts2-core-6.0"));
     }
