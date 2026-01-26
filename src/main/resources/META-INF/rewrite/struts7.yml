@@ -23,7 +23,7 @@ description: Migrate to Struts 7.0. The full migration guide can be found [here]
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.MigrateStruts7
 displayName: Migrate to Struts 7.0
-description: Migrate Struts 6.x to Struts 7.x
+description: Migrate Struts 6.x to Struts 7.x.
 recipeList:
   - org.openrewrite.maven.UpgradeDependencyVersion:
       groupId: org.apache.struts
@@ -33,7 +33,7 @@ recipeList:
   - org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
   - org.openrewrite.java.struts.migrate7.UpdateStruts7Constants
 
-  # Required upgrades
+  # Required upgrades as of 7.x
   - org.openrewrite.java.migrate.UpgradeToJava17
   - org.openrewrite.java.migrate.jakarta.JakartaEE10
 
@@ -44,8 +44,7 @@ displayName: Rename OpenSymphony / XWork classes to Struts 7 packages
 description: Updates classes moved from com.opensymphony.xwork2.* to their new org.apache.struts2.* packages in Struts 7.
 recipeList:
 
-  # Core Action & Context
-  # moved under action sub package
+  # Core Action & Context: moved under action sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.Action
       newFullyQualifiedTypeName: org.apache.struts2.action.Action
@@ -54,8 +53,7 @@ recipeList:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.ActionChainResult
       newFullyQualifiedTypeName: org.apache.struts2.result.ActionChainResult
 
-  # ext / i18n (moved from com.opensymphony.xwork2 to org.apache.struts2.text)
-  # moved under text sub package
+  # ext / i18n: moved from com.opensymphony.xwork2 to org.apache.struts2.text
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.TextProvider
       newFullyQualifiedTypeName: org.apache.struts2.text.TextProvider
@@ -84,8 +82,7 @@ recipeList:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.TextProviderSupport
       newFullyQualifiedTypeName: org.apache.struts2.text.TextProviderSupport
 
-  # util → text
-  # moved under action text sub package
+  # util → text: moved under action text sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.util.AbstractLocalizedTextProvider
       newFullyQualifiedTypeName: org.apache.struts2.text.AbstractLocalizedTextProvider
@@ -98,8 +95,7 @@ recipeList:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.util.StrutsLocalizedTextProvider
       newFullyQualifiedTypeName: org.apache.struts2.text.StrutsLocalizedTextProvider
 
-  # Locale
-  # moved under action locale sub package
+  # Locale: moved under action locale sub package
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.DefaultLocaleProvider
       newFullyQualifiedTypeName: org.apache.struts2.locale.DefaultLocaleProvider
@@ -116,9 +112,7 @@ recipeList:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.LocaleProviderFactory
       newFullyQualifiedTypeName: org.apache.struts2.locale.LocaleProviderFactory
 
-  # ------------------------------------------------------------------
   # Catch-all fallback for remaining OpenSymphony classes
-  # ------------------------------------------------------------------
   - org.openrewrite.java.ChangePackage:
       oldPackageName: com.opensymphony.xwork2
       newPackageName: org.apache.struts2
