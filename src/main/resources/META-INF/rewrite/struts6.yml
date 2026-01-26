@@ -31,6 +31,7 @@ recipeList:
   - org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
   - org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
   - org.openrewrite.java.struts.migrate6.MigrateDateTagFormat
+  - org.openrewrite.java.struts.migrate6.RemoveFreemarkerHtmlBuiltin
   - org.openrewrite.java.struts.MigrateStrutsDtd:
       strutsVersion: 6.0
   - org.openrewrite.java.struts.migrate6.MigrateStaticOgnlMethodAccess
@@ -267,3 +268,17 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.XWorkException
       newFullyQualifiedTypeName: org.apache.struts2.StrutsException
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.struts.migrate6.RemoveFreemarkerHtmlBuiltin
+displayName: Remove deprecated Freemarker `?html` built-in
+description: >-
+  Removes the deprecated `?html` built-in from Freemarker templates.
+  After migrating to Struts 6 with the latest Freemarker (which enables auto-escaping by default),
+  the `?html` built-in is no longer needed and should be removed.
+  See the [Struts 2.5 to 6.0 migration guide](https://cwiki.apache.org/confluence/display/WW/Struts+2.5+to+6.0.0+migration#Struts2.5to6.0.0migration-Tagescapebehaviour).
+recipeList:
+  - org.openrewrite.text.FindAndReplace:
+      find: "?html"
+      replace: ""
+      filePattern: "**/*.ftl"
