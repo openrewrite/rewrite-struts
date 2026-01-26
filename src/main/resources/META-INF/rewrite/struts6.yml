@@ -47,6 +47,9 @@ recipeList:
       groupId: org.apache.struts
       artifactId: '*'
       newVersion: 6.x
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.apache.struts
+      artifactId: struts2-sitegraph-plugin
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
