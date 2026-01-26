@@ -23,19 +23,25 @@ description: Migrate to Struts 7.0. The full migration guide can be found [here]
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.MigrateStruts7
 displayName: Migrate to Struts 7.0
-description: Migrate Struts 6.x.x to Struts 7.1.1
-
+description: Migrate Struts 6.x to Struts 7.x
 recipeList:
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: org.apache.struts
+      artifactId: "*"
+      newVersion: 7.x
+      overrideManagedVersion: true
   - org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
   - org.openrewrite.java.struts.migrate7.UpdateStruts7Constants
-  - org.openrewrite.java.struts.migrate7.UpgradeStruts7Dependencies
+
+  # Required upgrades
+  - org.openrewrite.java.migrate.UpgradeToJava17
+  - org.openrewrite.java.migrate.jakarta.JakartaEE10
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
 displayName: Rename OpenSymphony / XWork classes to Struts 7 packages
 description: Updates classes moved from com.opensymphony.xwork2.* to their new org.apache.struts2.* packages in Struts 7.
-
 recipeList:
 
   # Core Action & Context
@@ -123,7 +129,6 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.UpdateStruts7Constants
 displayName: Align Struts XML constants for Struts 7
 description: Updates Struts XML constants that were renamed or tightened in Struts 7.
-
 recipeList:
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
@@ -142,16 +147,3 @@ recipeList:
       attributeName: name
       oldValue: struts.xwork.chaining.copyMessages
       newValue: struts.chaining.copyMessages
-
----
-type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.java.struts.migrate7.UpgradeStruts7Dependencies
-displayName: Upgrade Apache Struts dependencies to 7.1.1
-description: Updates all Maven dependencies from the org.apache.struts group to version 7.1.1 when migrating to Struts 7.
-
-recipeList:
-  - org.openrewrite.maven.UpgradeDependencyVersion:
-      groupId: org.apache.struts
-      artifactId: "*"
-      newVersion: 7.1.1
-      overrideManagedVersion: true

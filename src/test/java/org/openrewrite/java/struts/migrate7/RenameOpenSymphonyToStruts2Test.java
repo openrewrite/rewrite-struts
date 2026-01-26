@@ -21,9 +21,8 @@ import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.openrewrite.test.TypeValidation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
 class RenameOpenSymphonyToStruts2Test implements RewriteTest {
@@ -31,18 +30,9 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipeFromResources("org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2")
-          .parser(JavaParser.fromJavaVersion()
-            .classpathFromResources(
-              new InMemoryExecutionContext(),
-              "struts2-core-6.0"
-            ))
-          .typeValidationOptions(TypeValidation.builder()
-            .identifiers(false)
-            .build());
+          .parser(JavaParser.fromJavaVersion().classpathFromResources(new InMemoryExecutionContext(), "struts2-core-6.0"));
     }
-    // ------------------------------------------------------------------
-    // Core Action & Context
-    // ------------------------------------------------------------------
+
     @DocumentExample
     @Test
     void migrateCoreActionAndContextTypes() {
@@ -66,9 +56,6 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
         );
     }
 
-    // ------------------------------------------------------------------
-    // Interceptors & Validation
-    // ------------------------------------------------------------------
     @Test
     void migrateInterceptorAndValidationTypes() {
         rewriteRun(
@@ -91,10 +78,6 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
         );
     }
 
-
-    // ------------------------------------------------------------------
-    // ValueStack & Utilities
-    // ------------------------------------------------------------------
     @Test
     void migrateValueStackAndUtilityTypes() {
         rewriteRun(
@@ -117,9 +100,6 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
         );
     }
 
-    // ------------------------------------------------------------------
-    // Text / i18n
-    // ------------------------------------------------------------------
     @Test
     void migrateTextAndLocalizationTypes() {
         rewriteRun(
@@ -132,7 +112,6 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
               import com.opensymphony.xwork2.ResourceBundleTextProvider;
               import com.opensymphony.xwork2.TextProviderFactory;
               import com.opensymphony.xwork2.TextProviderSupport;
-              import com.opensymphony.xwork2.util.AbstractLocalizedTextProvider;
               import com.opensymphony.xwork2.util.GlobalLocalizedTextProvider;
               import com.opensymphony.xwork2.util.StrutsLocalizedTextProvider;
 
@@ -142,23 +121,20 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
                   ResourceBundleTextProvider bundle;
                   TextProviderFactory factory;
                   TextProviderSupport support;
-                  AbstractLocalizedTextProvider abstractProvider;
                   GlobalLocalizedTextProvider globalProvider;
                   StrutsLocalizedTextProvider strutsProvider;
               }
               """,
-            spec -> spec.after(after -> {
-                assertThat(after).contains("import org.apache.struts2.text.*;");
-                return after;
-            })
+            spec -> spec.after(after ->
+              assertThat(after)
+                .doesNotContain("com.opensymphony.xwork2")
+                .contains("import org.apache.struts2.text.*;")
+                .actual())
           )
         );
 
     }
 
-    // ------------------------------------------------------------------
-    // Locale
-    // ------------------------------------------------------------------
     @Test
     void migrateLocaleTypes() {
         rewriteRun(
@@ -193,9 +169,6 @@ class RenameOpenSymphonyToStruts2Test implements RewriteTest {
         );
     }
 
-    // ------------------------------------------------------------------
-    // Catch-all ChangePackage
-    // ------------------------------------------------------------------
     @Test
     void catchAllChangePackageHandlesUnlistedTypes() {
         rewriteRun(
