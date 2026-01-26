@@ -30,6 +30,7 @@ recipeList:
   - org.openrewrite.java.struts.migrate6.MigrateOpenSymphonyClasses
   - org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
   - org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
+  - org.openrewrite.java.struts.migrate6.MigrateDateTagFormat
   - org.openrewrite.java.struts.MigrateStrutsDtd:
       strutsVersion: 6.0
 ---
