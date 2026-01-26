@@ -20,13 +20,10 @@ dependencies {
     runtimeOnly("org.openrewrite:rewrite-java-21")
 
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:$rewriteVersion")
+    implementation("org.openrewrite.recipe:rewrite-migrate-java:${rewriteVersion}")
 
     testImplementation("org.openrewrite:rewrite-maven")
     testImplementation("org.openrewrite:rewrite-test")
 
     testRuntimeOnly("javax.servlet:javax.servlet-api:4.0.1")
-}
-
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-Arewrite.javaParserClasspathFrom=resources")
 }
