@@ -33,6 +33,7 @@ recipeList:
   - org.openrewrite.java.struts.migrate6.MigrateDateTagFormat
   - org.openrewrite.java.struts.MigrateStrutsDtd:
       strutsVersion: 6.0
+  - org.openrewrite.java.struts.migrate6.MigrateStaticOgnlMethodAccess
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
