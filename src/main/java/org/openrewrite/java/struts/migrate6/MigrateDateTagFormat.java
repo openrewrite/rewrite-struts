@@ -17,7 +17,9 @@ package org.openrewrite.java.struts.migrate6;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.openrewrite.*;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.Recipe;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.text.PlainText;
 import org.openrewrite.text.PlainTextVisitor;
 
@@ -44,16 +46,10 @@ import java.util.regex.Pattern;
 @Value
 public class MigrateDateTagFormat extends Recipe {
 
-    @Override
-    public String getDisplayName() {
-        return "Migrate Struts date tag format patterns";
-    }
+    String displayName = "Migrate Struts date tag format patterns";
 
-    @Override
-    public String getDescription() {
-        return "Converts SimpleDateFormat patterns in `<s:date>` tags to DateTimeFormatter-compatible patterns. " +
-               "Struts 6.0 uses DateTimeFormatter instead of SimpleDateFormat, which has different pattern letter meanings.";
-    }
+    String description = "Converts SimpleDateFormat patterns in `<s:date>` tags to DateTimeFormatter-compatible patterns. " +
+            "Struts 6.0 uses DateTimeFormatter instead of SimpleDateFormat, which has different pattern letter meanings.";
 
     // Patterns to match Struts date tags with format attribute:
     // - JSP: <s:date ... format="..." ...> or <s:date ... format='...' ...>

@@ -17,7 +17,10 @@ package org.openrewrite.java.struts.search;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.openrewrite.*;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.Recipe;
+import org.openrewrite.SourceFile;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.java.struts.table.StaticOgnlMethodAccess;
 import org.openrewrite.marker.SearchResult;
 import org.openrewrite.xml.XmlIsoVisitor;
@@ -54,17 +57,11 @@ public class FindStaticOgnlMethodAccess extends Recipe {
             "@([a-zA-Z_][a-zA-Z0-9_.]+)@([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
     );
 
-    @Override
-    public String getDisplayName() {
-        return "Find static OGNL method access";
-    }
+    String displayName = "Find static OGNL method access";
 
-    @Override
-    public String getDescription() {
-        return "Find OGNL expressions that use static method access (e.g., `@com.app.Util@makeCode()`), " +
-               "which is disabled by default in Struts 6 for security reasons. " +
-               "These expressions need to be migrated to use action instance methods instead.";
-    }
+    String description = "Find OGNL expressions that use static method access (e.g., `@com.app.Util@makeCode()`), " +
+            "which is disabled by default in Struts 6 for security reasons. " +
+            "These expressions need to be migrated to use action instance methods instead.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

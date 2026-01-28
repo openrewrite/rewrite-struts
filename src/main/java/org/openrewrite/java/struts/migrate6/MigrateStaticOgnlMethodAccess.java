@@ -17,7 +17,10 @@ package org.openrewrite.java.struts.migrate6;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.openrewrite.*;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.ScanningRecipe;
+import org.openrewrite.Tree;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.StringUtils;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.JavaTemplate;
@@ -62,17 +65,11 @@ public class MigrateStaticOgnlMethodAccess extends ScanningRecipe<MigrateStaticO
     private static final XPathMatcher ACTION_MATCHER = new XPathMatcher("//action");
     private static final XPathMatcher RESULT_MATCHER = new XPathMatcher("//action/result");
 
-    @Override
-    public String getDisplayName() {
-        return "Migrate static OGNL method access to action wrapper methods";
-    }
+    String displayName = "Migrate static OGNL method access to action wrapper methods";
 
-    @Override
-    public String getDescription() {
-        return "Migrates OGNL expressions using static method access (e.g., `@com.app.Util@makeCode()`) " +
-               "to use action wrapper methods instead. Static method access is disabled by default in Struts 6 " +
-               "for security reasons.";
-    }
+    String description = "Migrates OGNL expressions using static method access (e.g., `@com.app.Util@makeCode()`) " +
+            "to use action wrapper methods instead. Static method access is disabled by default in Struts 6 " +
+            "for security reasons.";
 
     @Value
     public static class StaticMethodCall {
@@ -83,9 +80,9 @@ public class MigrateStaticOgnlMethodAccess extends ScanningRecipe<MigrateStaticO
 
         public String getWrapperMethodName() {
             // Convert com.app.Util.makeCode to utilMakeCode
-            String simpleName = className.contains(".")
-                    ? className.substring(className.lastIndexOf('.') + 1)
-                    : className;
+            String simpleName = className.contains(".") ?
+                    className.substring(className.lastIndexOf('.') + 1) :
+                    className;
             return StringUtils.uncapitalize(simpleName) + StringUtils.capitalize(methodName);
         }
 
@@ -163,11 +160,11 @@ public class MigrateStaticOgnlMethodAccess extends ScanningRecipe<MigrateStaticO
                         }
                     }
                 }
-                if (jspPath == null || jspPath.isEmpty()) {
+                if (StringUtils.isNullOrEmpty( jspPath )) {
                     jspPath = TagUtils.getAttribute(t, "name", "");
                 }
 
-                if (jspPath != null && !jspPath.isEmpty()) {
+                if (StringUtils.isNotEmpty( jspPath )) {
                     // Normalize JSP path (remove leading slash, etc.)
                     String normalizedPath = normalizeJspPath(jspPath);
                     acc.getJspToActionClasses()

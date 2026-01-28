@@ -112,6 +112,36 @@ examples:
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate6.MigrateStaticOgnlMethodAccess
+examples:
+- description: '`MigrateStaticOgnlMethodAccessTest#migrateStaticMethodInJspWithMapping`'
+  sources:
+  - before: |
+      <html>
+          <body>
+              <s:property value="@com.app.Util@makeCode()" />
+          </body>
+      </html>
+    after: |
+      <html>
+          <body>
+              <s:property <!--~~>-->value="utilMakeCode" />
+          </body>
+      </html>
+    path: dashboard.jsp
+    language: xml
+  - before: |
+      <struts>
+          <package name="app" extends="struts-default">
+              <action name="dashboard" class="com.example.DashboardAction">
+                  <result>/dashboard.jsp</result>
+              </action>
+          </package>
+      </struts>
+    path: struts.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
 examples:
 - description: '`MigrateStruts6ConstantsTest#inStrutsXml`'
@@ -177,6 +207,41 @@ examples:
           </dependencies>
       </project>
     path: pom.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
+examples:
+- description: '`RenameOpenSymphonyToStruts2Test#migrateCoreActionAndContextTypes`'
+  sources:
+  - before: |
+      import com.opensymphony.xwork2.Action;
+      import com.opensymphony.xwork2.ActionSupport;
+      import com.opensymphony.xwork2.ActionChainResult;
+
+      class MyAction extends ActionSupport implements Action {
+          ActionChainResult result;
+      }
+    language: java
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.search.FindStaticOgnlMethodAccess
+examples:
+- description: '`FindStaticOgnlMethodAccessTest#findStaticMethodAccessInStrutsTag`'
+  sources:
+  - before: |
+      <html>
+          <body>
+              <s:property value="@com.app.Util@makeCode()" />
+          </body>
+      </html>
+    after: |
+      <html>
+          <body>
+              <s:property <!--~~>-->value="@com.app.Util@makeCode()" />
+          </body>
+      </html>
+    path: index.jsp
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
