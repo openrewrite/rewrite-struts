@@ -24,7 +24,8 @@ import org.openrewrite.xml.XmlIsoVisitor;
 import org.openrewrite.xml.tree.Content;
 import org.openrewrite.xml.tree.Xml;
 
-import java.util.Collections;
+import static java.util.Collections.singletonList;
+
 import java.util.List;
 
 @Value
@@ -50,7 +51,7 @@ public class MigrateTilesListener extends Recipe {
                     if (content != null && content.size() == 1 && content.get(0) instanceof Xml.CharData) {
                         Xml.CharData charData = (Xml.CharData) content.get(0);
                         if (OLD_LISTENER.equals(charData.getText().trim())) {
-                            return t.withContent(Collections.singletonList(charData.withText(
+                            return t.withContent(singletonList(charData.withText(
                                     charData.getText().replace(OLD_LISTENER, NEW_LISTENER))));
                         }
                     }

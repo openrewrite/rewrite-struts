@@ -26,7 +26,7 @@ import org.openrewrite.java.struts.search.FindStrutsXml;
 import org.openrewrite.xml.XmlIsoVisitor;
 import org.openrewrite.xml.tree.Xml;
 
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -55,7 +55,7 @@ public class MigrateInterceptorDisabledParam extends Recipe {
                                                 }
                                                 return attr;
                                             })
-                                            .collect(Collectors.toList())
+                                            .collect(toList())
                             );
                         }
 
