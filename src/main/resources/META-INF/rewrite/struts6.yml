@@ -35,6 +35,9 @@ recipeList:
   - org.openrewrite.java.struts.MigrateStrutsDtd:
       strutsVersion: 6.0
   - org.openrewrite.java.struts.migrate6.MigrateStaticOgnlMethodAccess
+  - org.openrewrite.java.struts.migrate6.MigrateValidatorDtd
+  - org.openrewrite.java.struts.migrate6.MigrateInterceptorDisabledParam
+  - org.openrewrite.java.struts.migrate6.MigrateTilesListener
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
