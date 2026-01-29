@@ -24,9 +24,9 @@ import org.openrewrite.xml.XmlIsoVisitor;
 import org.openrewrite.xml.tree.Content;
 import org.openrewrite.xml.tree.Xml;
 
-import static java.util.Collections.singletonList;
-
 import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
