@@ -1,0 +1,338 @@
+#
+# Copyright 2025 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+type: specs.openrewrite.org/v1beta/category
+name: Struts 1 to 2
+packageName: org.openrewrite.java.struts.migrate2
+description: Migrate from Struts 1.x to Struts 2.x.
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.struts.migrate2.MigrateStruts2
+displayName: Migrate to Struts 2.x from Struts 1.x
+description: Comprehensive migration from Struts 1.x to Struts 2.x framework.
+recipeList:
+  - org.openrewrite.java.struts.migrate2.MigrateActionClass
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: struts
+      artifactId: struts
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.apache.struts
+      artifactId: struts-core
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.apache.struts
+      artifactId: struts-taglib
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.apache.struts
+      artifactId: struts-tiles
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.apache.struts
+      artifactId: struts-extras
+  - org.openrewrite.java.dependencies.AddDependency:
+      groupId: org.apache.struts
+      artifactId: struts2-core
+      version: 2.5.x
+      onlyIfUsing: com.opensymphony.xwork2.*
+  - org.openrewrite.java.dependencies.AddDependency:
+      groupId: org.apache.struts
+      artifactId: struts2-convention-plugin
+      version: 2.5.x
+      onlyIfUsing: com.opensymphony.xwork2.*
+  - org.openrewrite.java.struts.migrate2.MigrateStrutsConfig
+  - org.openrewrite.java.struts.migrate2.MigrateWebXml
+  - org.openrewrite.java.struts.migrate2.MigrateJspTaglib
+  - org.openrewrite.java.struts.migrate2.MigrateJspTags
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.struts.migrate2.MigrateJspTaglib
+displayName: Migrate JSP taglib directives for Struts 2
+description: Update Struts 1 taglib directives to Struts 2 taglib.
+recipeList:
+  - org.openrewrite.text.FindAndReplace:
+      find: '<%@\s*taglib\s+uri\s*=\s*"[^"]*struts-html[^"]*"\s+prefix\s*=\s*"html"\s*%>'
+      replace: '<%@ taglib prefix="s" uri="/struts-tags" %>'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<%@\s*taglib\s+uri\s*=\s*"[^"]*struts-bean[^"]*"\s+prefix\s*=\s*"bean"\s*%>'
+      replace: ''
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<%@\s*taglib\s+uri\s*=\s*"[^"]*struts-logic[^"]*"\s+prefix\s*=\s*"logic"\s*%>'
+      replace: ''
+      regex: true
+      filePattern: "**/*.jsp"
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.struts.migrate2.MigrateJspTags
+displayName: Migrate Struts 1 JSP tags to Struts 2
+description: Transforms Struts 1 JSP tags (html:, bean:, logic:) to Struts 2 tags (s:).
+recipeList:
+  # html:form -> s:form
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:form'
+      replace: '<s:form'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</html:form>'
+      replace: '</s:form>'
+      filePattern: "**/*.jsp"
+  # html:text -> s:textfield (with property -> name)
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:text\s+property="([^"]+)"'
+      replace: '<s:textfield name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:text'
+      replace: '<s:textfield'
+      filePattern: "**/*.jsp"
+  # html:password -> s:password
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:password\s+property="([^"]+)"'
+      replace: '<s:password name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:password'
+      replace: '<s:password'
+      filePattern: "**/*.jsp"
+  # html:textarea -> s:textarea
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:textarea\s+property="([^"]+)"'
+      replace: '<s:textarea name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:textarea'
+      replace: '<s:textarea'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</html:textarea>'
+      replace: '</s:textarea>'
+      filePattern: "**/*.jsp"
+  # html:select -> s:select
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:select\s+property="([^"]+)"'
+      replace: '<s:select name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:select'
+      replace: '<s:select'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</html:select>'
+      replace: '</s:select>'
+      filePattern: "**/*.jsp"
+  # html:option -> s:option
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:option'
+      replace: '<s:option'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</html:option>'
+      replace: '</s:option>'
+      filePattern: "**/*.jsp"
+  # html:hidden -> s:hidden
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:hidden\s+property="([^"]+)"'
+      replace: '<s:hidden name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:hidden'
+      replace: '<s:hidden'
+      filePattern: "**/*.jsp"
+  # html:checkbox -> s:checkbox
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:checkbox\s+property="([^"]+)"'
+      replace: '<s:checkbox name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:checkbox'
+      replace: '<s:checkbox'
+      filePattern: "**/*.jsp"
+  # html:radio -> s:radio
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:radio\s+property="([^"]+)"'
+      replace: '<s:radio name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:radio'
+      replace: '<s:radio'
+      filePattern: "**/*.jsp"
+  # html:submit -> s:submit
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:submit'
+      replace: '<s:submit'
+      filePattern: "**/*.jsp"
+  # html:reset -> s:reset
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:reset'
+      replace: '<s:reset'
+      filePattern: "**/*.jsp"
+  # html:link -> s:a
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:link\s+action="([^"]+)"'
+      replace: '<s:a action="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:link\s+href="([^"]+)"'
+      replace: '<s:a href="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:link'
+      replace: '<s:a'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</html:link>'
+      replace: '</s:a>'
+      filePattern: "**/*.jsp"
+  # html:errors -> s:actionerror and s:fielderror
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:errors\s*/>'
+      replace: '<s:actionerror/><s:fielderror/>'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:errors>'
+      replace: '<s:actionerror/><s:fielderror/>'
+      filePattern: "**/*.jsp"
+  # html:messages -> s:actionmessage
+  - org.openrewrite.text.FindAndReplace:
+      find: '<html:messages'
+      replace: '<s:actionmessage'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</html:messages>'
+      replace: '</s:actionmessage>'
+      filePattern: "**/*.jsp"
+  # bean:write -> s:property
+  - org.openrewrite.text.FindAndReplace:
+      find: '<bean:write\s+name="([^"]+)"\s+property="([^"]+)"'
+      replace: '<s:property value="$1.$2"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<bean:write\s+property="([^"]+)"'
+      replace: '<s:property value="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<bean:write'
+      replace: '<s:property'
+      filePattern: "**/*.jsp"
+  # bean:message -> s:text
+  - org.openrewrite.text.FindAndReplace:
+      find: '<bean:message\s+key="([^"]+)"'
+      replace: '<s:text name="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<bean:message'
+      replace: '<s:text'
+      filePattern: "**/*.jsp"
+  # logic:iterate -> s:iterator
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:iterate\s+id="([^"]+)"\s+name="([^"]+)"'
+      replace: '<s:iterator value="$2" var="$1"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:iterate\s+name="([^"]+)"\s+id="([^"]+)"'
+      replace: '<s:iterator value="$1" var="$2"'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:iterate'
+      replace: '<s:iterator'
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:iterate>'
+      replace: '</s:iterator>'
+      filePattern: "**/*.jsp"
+  # logic:present -> s:if test="x != null"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:present\s+name="([^"]+)"\s*>'
+      replace: '<s:if test="$1 != null">'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:present>'
+      replace: '</s:if>'
+      filePattern: "**/*.jsp"
+  # logic:notPresent -> s:if test="x == null"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:notPresent\s+name="([^"]+)"\s*>'
+      replace: '<s:if test="$1 == null">'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:notPresent>'
+      replace: '</s:if>'
+      filePattern: "**/*.jsp"
+  # logic:equal -> s:if test="x == y"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:equal\s+name="([^"]+)"\s+value="([^"]+)"\s*>'
+      replace: '<s:if test="$1 == ''$2''">'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:equal>'
+      replace: '</s:if>'
+      filePattern: "**/*.jsp"
+  # logic:notEqual -> s:if test="x != y"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:notEqual\s+name="([^"]+)"\s+value="([^"]+)"\s*>'
+      replace: '<s:if test="$1 != ''$2''">'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:notEqual>'
+      replace: '</s:if>'
+      filePattern: "**/*.jsp"
+  # logic:empty -> s:if test="x == null || x.isEmpty()"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:empty\s+name="([^"]+)"\s*>'
+      replace: '<s:if test="$1 == null || $1.isEmpty()">'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:empty>'
+      replace: '</s:if>'
+      filePattern: "**/*.jsp"
+  # logic:notEmpty -> s:if test="x != null && !x.isEmpty()"
+  - org.openrewrite.text.FindAndReplace:
+      find: '<logic:notEmpty\s+name="([^"]+)"\s*>'
+      replace: '<s:if test="$1 != null && !$1.isEmpty()">'
+      regex: true
+      filePattern: "**/*.jsp"
+  - org.openrewrite.text.FindAndReplace:
+      find: '</logic:notEmpty>'
+      replace: '</s:if>'
+      filePattern: "**/*.jsp"
+  # Clean up self-closing tags
+  - org.openrewrite.text.FindAndReplace:
+      find: '\s*/>'
+      replace: '/>'
+      regex: true
+      filePattern: "**/*.jsp"

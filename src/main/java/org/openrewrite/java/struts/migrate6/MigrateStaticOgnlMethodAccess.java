@@ -255,7 +255,8 @@ public class MigrateStaticOgnlMethodAccess extends ScanningRecipe<MigrateStaticO
                 if (tree instanceof J.CompilationUnit) {
                     // Handle Java files - add wrapper methods to Action classes
                     return new ActionClassVisitor(acc).visit(tree, ctx);
-                } else if (tree instanceof Xml.Document) {
+                }
+                if (tree instanceof Xml.Document) {
                     // Handle XML/JSP files - update OGNL expressions
                     Xml.Document doc = (Xml.Document) tree;
                     String sourcePath = doc.getSourcePath().toString();
