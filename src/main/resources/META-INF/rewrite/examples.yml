@@ -32,6 +32,107 @@ examples:
     language: xml
 ---
 type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate2.MigrateActionClass
+examples:
+- description: '`MigrateActionClassTest#migrateBasicAction`'
+  classpathFromResources:
+    - struts-1.2
+    - struts2-core-2.5
+    - javax.servlet-api-4.0
+  sources:
+  - before: |
+      import org.apache.struts.action.Action;
+      import org.apache.struts.action.ActionForm;
+      import org.apache.struts.action.ActionForward;
+      import org.apache.struts.action.ActionMapping;
+      import javax.servlet.http.HttpServletRequest;
+      import javax.servlet.http.HttpServletResponse;
+
+      public class LoginAction extends Action {
+          public ActionForward execute(ActionMapping mapping, ActionForm form,
+                  HttpServletRequest request, HttpServletResponse response) {
+              return mapping.findForward("success");
+          }
+      }
+    after: |
+      import com.opensymphony.xwork2.ActionSupport;
+
+      public class LoginAction extends ActionSupport {
+          public String execute() {
+              return SUCCESS;
+          }
+      }
+    language: java
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate2.MigrateStrutsConfig
+examples:
+- description: '`MigrateStrutsConfigTest#migrateBasicStrutsConfig`'
+  sources:
+  - before: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+      <struts-config>
+          <action-mappings>
+              <action path="/login" type="com.example.LoginAction">
+                  <forward name="success" path="/welcome.jsp"/>
+              </action>
+          </action-mappings>
+      </struts-config>
+    after: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+      <struts>
+          <package name="default" extends="struts-default">
+              <action name="login" class="com.example.LoginAction">
+                  <result name="success">/welcome.jsp</result>
+              </action>
+          </package>
+      </struts>
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
+recipeName: org.openrewrite.java.struts.migrate2.MigrateWebXml
+examples:
+- description: '`MigrateWebXmlTest#migrateStruts1ServletToFilter`'
+  sources:
+  - before: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <web-app>
+          <servlet>
+              <servlet-name>action</servlet-name>
+              <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+              <init-param>
+                  <param-name>config</param-name>
+                  <param-value>/WEB-INF/struts-config.xml</param-value>
+              </init-param>
+              <load-on-startup>1</load-on-startup>
+          </servlet>
+          <servlet-mapping>
+              <servlet-name>action</servlet-name>
+              <url-pattern>*.do</url-pattern>
+          </servlet-mapping>
+      </web-app>
+    after: |
+      <?xml version="1.0" encoding="UTF-8"?>
+      <web-app>
+          <filter>
+              <filter-name>action</filter-name>
+              <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+          </filter>
+          <filter-mapping>
+              <filter-name>action</filter-name>
+              <url-pattern>/*</url-pattern>
+          </filter-mapping>
+      </web-app>
+    path: web.xml
+    language: xml
+---
+type: specs.openrewrite.org/v1beta/example
 recipeName: org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
 examples:
 - description: '`MigrateAwareInterfacesTest#migrateSessionAware`'

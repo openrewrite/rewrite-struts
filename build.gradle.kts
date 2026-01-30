@@ -7,6 +7,8 @@ group = "org.openrewrite.recipe"
 description = "Automatically refactor Apache Struts."
 
 recipeDependencies {
+    testParserClasspath("struts:struts:1.2.9")
+    testParserClasspath("javax.servlet:javax.servlet-api:4.0.1")
     parserClasspath("org.apache.struts:struts2-core:2.5.22")
     parserClasspath("org.apache.struts:struts2-core:6.0.3")
 }
