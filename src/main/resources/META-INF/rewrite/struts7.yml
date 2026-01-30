@@ -24,6 +24,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.MigrateStruts7
 displayName: Migrate to Struts 7.0
 description: Migrate Struts 6.x to Struts 7.x.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.UpgradeDependencyVersion:
       groupId: org.apache.struts
@@ -42,6 +44,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.RenameOpenSymphonyToStruts2
 displayName: Rename OpenSymphony / XWork classes to Struts 7 packages
 description: Updates classes moved from com.opensymphony.xwork2.* to their new org.apache.struts2.* packages in Struts 7.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
 
   # Core Action & Context: moved under action sub package
@@ -123,6 +127,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate7.UpdateStruts7Constants
 displayName: Align Struts XML constants for Struts 7
 description: Updates Struts XML constants that were renamed or tightened in Struts 7.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.xml.ChangeTagAttribute:
       elementName: constant
