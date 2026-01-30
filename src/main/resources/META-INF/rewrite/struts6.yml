@@ -24,6 +24,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.MigrateStruts6
 displayName: Migrate to Struts 6.0
 description: Migrate Struts 2.x to Struts 6.0.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
   - org.openrewrite.java.struts.migrate6.MigrateDynamicMethodInvocation
@@ -40,6 +42,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.UpgradeStruts6Dependencies
 displayName: Upgrade Struts 6.0 dependencies
 description: Upgrade Struts 2.x dependencies to Struts 6.0.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.java.dependencies.ChangeDependency:
       oldGroupId: org.apache.struts
@@ -59,6 +63,7 @@ name: org.openrewrite.java.struts.migrate6.MigrateStruts6Constants
 displayName: Migrate to Struts 6.0 constants
 description: All Xwork constants had been already deprecated, with this version all of them have been removed and Struts constants have been used instead.
 preconditions:
+  - org.openrewrite.Singleton
   - org.openrewrite.java.struts.search.FindStrutsXml
 recipeList:
   - org.openrewrite.xml.ChangeTagAttribute:
@@ -182,6 +187,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.MigrateAwareInterfaces
 displayName: Migrate Struts 2.0 interceptors to action "aware" interfaces
 description: These types have moved to a new package in Struts 6.0 and their methods have been renamed from set* to with*.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: org.apache.struts2.interceptor.ApplicationAware setApplication(java.util.Map)
@@ -258,6 +265,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: org.openrewrite.java.struts.migrate6.MigrateOpenSymphonyClasses
 displayName: Migrate OpenSymphony classes to Struts 6.0
 description: Migrate classes from `com.opensymphony.xwork2` to their replacements in `org.apache.struts2`.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.opensymphony.xwork2.config.providers.XmlConfigurationProvider
@@ -277,6 +286,8 @@ description: >-
   After migrating to Struts 6 with the latest Freemarker (which enables auto-escaping by default),
   the `?html` built-in is no longer needed and should be removed.
   See the [Struts 2.5 to 6.0 migration guide](https://cwiki.apache.org/confluence/display/WW/Struts+2.5+to+6.0.0+migration#Struts2.5to6.0.0migration-Tagescapebehaviour).
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.text.FindAndReplace:
       find: "?html"
